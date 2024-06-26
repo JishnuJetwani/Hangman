@@ -1,0 +1,122 @@
+//Hangman
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+void hangman(int x){
+    //x is the number of wrong guesses
+    if (x==0){
+        cout << "-----------" << endl;
+        cout << "| |    |  |" << endl;
+        cout << "|   /\\    |" << endl;
+        cout << "|  -----  |" << endl;
+        cout << "-----------" << endl;
+        cout << "     |    " << endl;
+        cout << "     |    " << endl;
+        cout << " ----|----" << endl;
+        cout << "     |    " << endl;
+        cout << "     |    " << endl;
+        cout << "    / \\   " << endl;
+        cout << "   /   \\   " << endl;
+    }
+    if (x==1){
+        cout << "-----------" << endl;
+        cout << "| |    |  |" << endl;
+        cout << "|   /\\    |" << endl;
+        cout << "|  -----  |" << endl;
+        cout << "-----------" << endl;
+        cout << "     |    " << endl;
+        cout << "     |    " << endl;
+        cout << " ----|----" << endl;
+        cout << "     |    " << endl;
+        cout << "     |    " << endl;
+    }
+    if (x==2){
+        cout << "-----------" << endl;
+        cout << "| |    |  |" << endl;
+        cout << "|   /\\    |" << endl;
+        cout << "|  -----  |" << endl;
+        cout << "-----------" << endl;
+        cout << "     |    " << endl;
+        cout << "     |    " << endl;
+        cout << "     |    " << endl;
+        cout << "     |    " << endl;
+        cout << "     |    " << endl;
+    }
+    if (x==3){
+        cout << "-----------" << endl;
+        cout << "| |    |  |" << endl;
+        cout << "|   /\\    |" << endl;
+        cout << "|  -----  |" << endl;
+        cout << "-----------" << endl;
+
+    }
+    if (x==4){
+        cout << ":(";
+    }
+}
+void createLetters(string word, vector<char> guessed_letters){
+    for (int i = 0; i < word.size(); i++){
+        bool letterGuessed = false;
+        for (int j = 0; j < guessed_letters.size(); j++){
+            if (word[i]==guessed_letters[j]){
+                cout << word[i];
+                letterGuessed = true;
+            }
+        }
+        if (!letterGuessed) cout << "_";
+    }
+}
+string random_word(){
+    vector <string> all = {"vivacious","green","nervous","dusty","proud","underwear","tiger","possessive","coal","tax","temper","root","choke","whistle","peaceful","furtive","entertain","refuse","upbeat","wide","calculator","alert","spot","authority","useless","silk","admit","relax","cagey","giddy","damaged","penitent","crown","punishment","return","bow","unbiased","sudden","absorbed","list","vase","erratic","raise","transport","death","industrious","zip","redundant","stage","pigs","hypnotic","wretched","cracker","desk","snatch","aspiring","decay","crowded","reign","end","irritate","foot","wild","toys","decide","arrogant","magenta","shrill","unadvised","weary","battle","fuzzy","fact","uppity","tempt","drown","violent","yielding","furniture","grieving","flat","puzzling","nerve","irate","knot","destruction","harmonious","report","jolly","system","absurd","shop","salt","unaccountable","aware","zipper","puzzled","amuck","undesirable","advice","milk","plough","pie","receive","spell","yarn","remarkable","brother","gaze","juvenile","rat","thin","cheap","courageous","roasted","enter","boat","needy","complete","delirious","alarm","neat","abashed","x-ray","skin","obsequious","tidy","settle","reminiscent","harsh","sheet","amused","prick","joyous","argue","outstanding","friendly","claim","dispensable","murky","friction","daily","charming","wiggly","sincere","plucky","key","jaded","abhorrent"};
+    srand(time(0));
+    int lower_bound = 0;
+    int upper_bound = 148;
+    int random_number = lower_bound + rand() % (upper_bound - lower_bound + 1);
+    return all[random_number];
+    
+}
+int main() {
+    // Write C++ code here
+    cout << "If you would like to play with a random word, type 'Y'. If you would like to choose the word, type 'N'" << endl;
+    char choice; cin >> choice;
+    string word;
+    if (choice == 'Y'){
+        word = random_word();
+    }
+    else{
+        cout << "What word would you like to use?" << endl;
+        cin >> word;
+    }
+    cout << "Meet your hangman!" << endl;
+    int guesses = 0;
+    hangman(guesses);
+    vector<char> guessed_letters(0);
+    while (guesses<5){
+        cout << "Type 'W' if you would like to guess the word and 'L' to guess a letter" << endl;
+        char letterOrWord; cin >> letterOrWord;
+        if (letterOrWord=='W'){
+            cout << "Enter your guess! ";
+            string guess; cin >> guess;
+            if (guess==word){
+                cout << "You win!" << endl;
+                break;
+            }
+        }else{
+            cout << "Enter your guess! ";
+            char guess; cin >> guess;
+            guessed_letters.push_back(guess);
+            createLetters(word, guessed_letters);
+            cout << endl;
+        }
+        guesses++;
+        cout << "You have " << 5-guesses << " guesses left!" << endl;
+        hangman(guesses);
+        if (guesses == 5){
+            cout << "You lose!" << endl;
+            cout << "The word was " << word << endl; 
+        }
+    }
+    cout << "Thanks for playing!" << endl;
+}
